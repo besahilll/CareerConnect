@@ -1,22 +1,38 @@
-import React from 'react'
-import Link from 'next/link'
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function InterviewButton() {
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-cover" 
-    style={{ backgroundImage: 'url("/assets/images/banner.jpg")' }}
-    >
-      <Link href='/dashboard/PostInterview'>
-      <button className="bg-orange-500 text-white py-4 px-4 rounded hover:bg-orange-600 w-64">
-        Post Your Interview Experience
-      </button>
-      </Link>
-      <br />
-      <Link href='/dashboard/interviewInsights'>
-      <button className="bg-gray-600 text-white py-4 px-4 rounded hover:bg-gray-700 w-64">
-        Check Interview Insights
-      </button>
-      </Link>
-    </div>
-  )
+    <section className="bg-gray-50 py-16 flex">
+      <div className="w-1/2 px-8">
+        <h1 className="text-6xl font-bold text-gray-800">Preparing for <br></br>Interviews? </h1>
+        <p className="mt-4 text-gray-600 text-lg">
+          Get insights from alumni placed in top companies.
+        </p>
+        <div className="mt-8 space-x-4">
+          <Link href='/dashboard/PostInterview'>
+          <button className="bg-blue-500 text-white px-8 py-3 rounded-lg shadow-md">
+            Check Interview Insights
+          </button>
+          </Link>
+          <br /> <br />
+          <Link href='/dashboard/interviewInsights'>
+          <button className="bg-green-500 text-white px-8 py-3 rounded-lg shadow-md -ml-4">
+            Post Interview Experience
+          </button>
+          </Link>
+        </div>
+      </div>
+      <div className="w-1/2">
+        <Image
+          src="/assets/images/info.png" // updated image needs to be uploaded
+          alt="Placement Preparation"
+          width={500}
+          height={400}
+          className="mx-auto"
+        />
+      </div>
+    </section>
+  );
 }
