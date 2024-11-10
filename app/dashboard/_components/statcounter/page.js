@@ -21,8 +21,8 @@ export default function StatCounter({ target, label, duration }) {
 
   return (
     <div>
-      <div className="text-4xl font-bold">{count}+</div>
-      <div className="text-xl">{label}</div>
+      <div className="text-4xl font-bold text-white">{count}+</div>
+      <div className="text-xl text-white">{label}</div>
     </div>
   );
 }

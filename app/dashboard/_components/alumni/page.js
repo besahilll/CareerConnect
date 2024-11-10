@@ -25,7 +25,7 @@ const alumniData = [
     name: "Navya Saluja",
     company: "Avvatar",
     message: "Avvatar is a super dream company which have one of the toughest OA's, and proud to say CareerConnect is one of the best platform which helped me to crack my OA.",
-    image: "/assets/images/yoshu.jpg",   //needs to add navya's image
+    image: "/assets/images/navya.jpg",   //needs to add navya's image
   },
 ];
 
