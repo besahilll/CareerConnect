@@ -5,9 +5,14 @@ import Link from "next/link";
 
 export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const toggleProfileDropdown = () => {
+    setIsProfileDropdownOpen(!isProfileDropdownOpen);
   };
 
   return (
@@ -60,7 +65,7 @@ export default function Navbar() {
           {/* Vertical divider and Profile Icon */}
           <div className="flex items-center space-x-4">
             <div className="border-l h-8 border-gray-300" /> {/* Vertical Divider */}
-            <Link href="/profile">
+            <button onClick={toggleProfileDropdown}>
               <Image
                 src="/assets/images/person.jpg"
                 alt="My Profile"
@@ -68,7 +73,23 @@ export default function Navbar() {
                 height={32}
                 className="rounded-full"
               />
-            </Link>
+            </button>
+            {isProfileDropdownOpen && (
+              <div className="absolute right-0 bg-white text-black mt-36 py-2 w-48 shadow-lg rounded">
+                <Link href="/dashboard/user-profile" className="block px-4 py-2 hover:bg-gray-200">
+                  My Profile
+                </Link>
+                <button
+                  onClick={() => {
+                    // Add your logout logic here
+                    console.log("Logout clicked");
+                  }}
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

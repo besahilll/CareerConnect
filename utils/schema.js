@@ -19,3 +19,11 @@ export const INTERVIEW_EXPERIENCE = mysqlTable('interview_experience', {
     experience: text('experience').notNull(),
     interviewLevel: mysqlEnum('interview_level', ['Easy', 'Moderate', 'Hard']).notNull()
 });
+
+export const USER = mysqlTable('user', {
+    id: int('id').autoincrement().notNull().primaryKey(),
+    name: varchar('name', { length: 100 }).notNull(),
+    username: varchar('username', { length: 50 }).notNull().unique(),
+    password: varchar('password', { length: 255 }).notNull(),
+    email: varchar('email', { length: 100 }).notNull().unique()
+});

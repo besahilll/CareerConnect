@@ -11,13 +11,13 @@ export default function InterviewButton() {
           Get insights from alumni placed in top companies.
         </p>
         <div className="mt-8 space-x-4">
-          <Link href='/dashboard/PostInterview'>
+          <Link href='/dashboard/interviewInsights'>
           <button className="bg-blue-500 text-white px-8 py-3 rounded-lg shadow-md">
             Check Interview Insights
           </button>
           </Link>
           <br /> <br />
-          <Link href='/dashboard/interviewInsights'>
+          <Link href='/dashboard/PostInterview'>
           <button className="bg-green-500 text-white px-8 py-3 rounded-lg shadow-md -ml-4">
             Post Interview Experience
           </button>
