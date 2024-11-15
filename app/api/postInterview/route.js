@@ -5,6 +5,9 @@ import { INTERVIEW_EXPERIENCE } from "@/utils/schema";
 export async function POST(req) {
     try {
         const data = await req.json();
+        const normalizedCompany = data?.company.replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase();
+        console.log(normalizedCompany)
+        const skills = Array.isArray(data?.skillsAsked) ? data.skillsAsked : [];
 
         const result = await db.insert(INTERVIEW_EXPERIENCE).values({
             name: data?.name,
@@ -14,13 +17,13 @@ export async function POST(req) {
             cgpa: data?.cgpa,
             contactNo: data?.contactNo,
             linkedinProfile: data?.linkedinProfile,
-            company: data?.company,
+            company: normalizedCompany,
             jobProfile: data?.jobProfile,
             jobLocation: data?.jobLocation,
             packageOffered: data?.packageOffered,
             studentsHired: data?.studentsHired,
             rounds: data?.rounds,
-            skillsAsked: data?.skillsAsked,
+            skillsAsked: JSON.stringify(skills),
             experience: data?.experience,
             interviewLevel: data?.interviewLevel
         });

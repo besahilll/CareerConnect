@@ -15,6 +15,11 @@ export default function Navbar() {
     setIsProfileDropdownOpen(!isProfileDropdownOpen);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+  };
+
   return (
     <nav className="pt-8 py-4 bg-white">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-4">
@@ -80,10 +85,7 @@ export default function Navbar() {
                   My Profile
                 </Link>
                 <button
-                  onClick={() => {
-                    // Add your logout logic here
-                    console.log("Logout clicked");
-                  }}
+                  onClick={handleLogout}
                   className="block w-full text-left px-4 py-2 hover:bg-gray-200"
                 >
                   Logout
