@@ -5,10 +5,11 @@ import { eq, sql } from "drizzle-orm";
 
 export async function GET(req) {
     try {
+        
         const companies = await db
-            .selectDistinct({ company: INTERVIEW_EXPERIENCE.company })
+        .selectDistinct({ company: sql`LOWER(${INTERVIEW_EXPERIENCE.company})` })
             .from(INTERVIEW_EXPERIENCE)
-        const companyList = companies.map((item) => item.company);
+            const companyList = [...new Set(companies.map(item => item.company.toLowerCase()))];
 
         return NextResponse.json({ companies: companyList });
     } catch (error) {
