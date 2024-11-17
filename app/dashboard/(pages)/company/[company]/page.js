@@ -69,9 +69,9 @@ function Page() {
                 <tbody>
                     {companyDetails.map((detail, index) => (
                         <tr key={index} className="odd:bg-white even:bg-gray-100">
-                            <td className="border border-gray-300 px-4 py-2">{detail.name}</td>
-                            <td className="border border-gray-300 px-4 py-2">{detail.yearOfPassout}</td>
-                            <td className="border border-gray-300 px-4 py-2">
+                            <td className="border border-gray-300 px-4 py-2 text-black">{detail.name}</td>
+                            <td className="border border-gray-300 px-4 py-2 text-black">{detail.yearOfPassout}</td>
+                            <td className="border border-gray-300 px-4 py-2 text-black">
                                 <Link href={`/dashboard/company/${encodeURIComponent(company)}/${encodeURIComponent(detail.name)}`}>
                                     Click Here
                                 </Link>
