@@ -100,7 +100,7 @@ export default function Page() {
                   </div>
                   <div className="p-4">
                     <h3 className="text-lg font-semibold text-gray-800 group-hover:text-blue-600">
-                      {company}
+                      {company.toUpperCase()}
                     </h3>
                     <p className="text-sm text-gray-600 mt-2">
                       Industry: <span className="font-medium">Consulting</span>

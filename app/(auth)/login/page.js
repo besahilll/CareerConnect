@@ -4,43 +4,72 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
+import GlobalApi from "@/app/_services/GlobalApi";
+import { encryptText } from "@/utils/encryption";
 
 export default function AuthPage() {
   const router = useRouter();
-  const { register, handleSubmit, setError, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm()
   const [isSignup, setIsSignup] = useState(false); // Initial state for toggling forms
 
   const handleFormSubmit = async (data) => {
-    if (isSignup && data.password !== data.confirmPassword) {
-      setError("confirmPassword", {
-        type: "manual",
-        message: "Passwords do not match.",
-      });
-      return;
-    }
-
     try {
-      const success = true; // Mock API response
-      if (success) {
+      let response;
+      if (isSignup) {
+        if (data.password !== data.confirmPassword) {
+          toast.error("Passwords do not match.");
+          return;
+        }
+        const encryptedPassword = encryptText(data.password);
+        data.password = encryptedPassword;
+        response = await GlobalApi.CreateNewUser(data);
+      } else {
+        response = await GlobalApi.LoginUser(data);
+      }
+  
+      if (response.status === 200) {
+        const result = response.data;
         toast.success(
           isSignup
             ? "Account created successfully!"
             : "Logged in successfully!"
         );
-        localStorage.setItem("token", "mock-token");
+        isSignup ? localStorage.setItem("token", result.data.token): localStorage.setItem("token", result.token)
         reset();
         router.push("/dashboard");
-      } else {
-        toast.error("Something went wrong");
       }
-    } catch {
-      toast.error("Something went wrong");
+    } catch (error) {
+      // Handle Axios error
+      if (error.response) {
+        // The request was made, and the server responded with a status code
+        const { status, data } = error.response;
+        if (status === 401) {
+          toast.error(data?.message || "Invalid username or password.");
+        } else {
+          toast.error(data?.message || "An error occurred. Please try again.");
+        }
+      } else if (error.request) {
+        // The request was made, but no response was received
+        toast.error("No response from the server. Please try again later.");
+      } else {
+        // Something happened in setting up the request
+        toast.error("An error occurred. Please try again later.");
+      }
+      console.error(error);
     }
-  };
+  };  
+  
+
 
   return (
     <div className="min-h-screen flex relative overflow-hidden items-center justify-center">
-      
+      <Toaster />
       {/* Left Panel */}
       <motion.div
         className={`absolute top-0 left-0 h-full ${isSignup ? "w-1/2 bg-white" : "w-1/2 bg-gradient-to-br from-blue-500 to-green-400"
@@ -78,6 +107,17 @@ export default function AuthPage() {
                   <input
                     type="text"
                     {...register("name")}
+                    required
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Username
+                  </label>
+                  <input
+                    type="text"
+                    {...register("username")}
                     required
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
                   />
@@ -163,16 +203,16 @@ export default function AuthPage() {
             className="text-center max-w-md w-full"
           >
             <div className="mb-4">
-                <img
-                  src="/assets/images/logo.png"
-                  alt="Logo"
-                  className="h-20 w-auto mx-auto"
-                />
-              </div>
-            
+              <img
+                src="/assets/images/logo.png"
+                alt="Logo"
+                className="h-20 w-auto mx-auto"
+              />
+            </div>
+
             {!isSignup ? (
               <>
-                <h2 className="text-3xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-green-400">Sign in to CareerConnect</h2>
+                <h2 className="text-3xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-green-400">Log in to CareerConnect</h2>
                 <form onSubmit={handleSubmit(handleFormSubmit)}>
                   <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">
@@ -210,7 +250,7 @@ export default function AuthPage() {
               <>
                 <h1 className="text-3xl font-bold text-white">Welcome Back!</h1>
                 <p className="mt-4 text-white">
-                  Sign in to continue your journey.
+                  Log in to continue your journey.
                 </p>
                 <motion.button
                   onClick={() => setIsSignup(false)}

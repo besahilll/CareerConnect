@@ -29,6 +29,21 @@ const UpdateUser = (data, token) => {
     });
 };
 
+const FetchSkills=()=>axios.get('/api/fetchSkills')
+
+const FetchPackage=()=>axios.get('/api/fetchPackage')
+
+const Predict = (file) => {
+    const formData = new FormData();
+    formData.append('resume', file);
+
+    return axios.post('/api/predict', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+};
+
 export default {
     postInterview,
     getCompany,
@@ -37,5 +52,8 @@ export default {
     CreateNewUser,
     LoginUser,
     GetUserData,
-    UpdateUser
+    UpdateUser,
+    FetchSkills,
+    FetchPackage,
+    Predict
 }

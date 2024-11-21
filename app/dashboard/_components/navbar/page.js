@@ -60,10 +60,10 @@ export default function Navbar() {
             )}
           </div>
 
-          <Link href="/resume-analysis" className="text-black hover:text-blue-500">
+          <Link href="/dashboard/resume_analysis" className="text-black hover:text-blue-500">
             Resume Analysis
           </Link>
-          <Link href="/analytics" className="text-black hover:text-blue-500">
+          <Link href="/dashboard/analytics_dashboard" className="text-black hover:text-blue-500">
             Analytics Dashboard
           </Link>
 
