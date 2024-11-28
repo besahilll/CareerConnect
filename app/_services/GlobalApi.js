@@ -1,3 +1,4 @@
+
 const { default: axios } = require('axios')
 
 const postInterview = (data) => axios.post('/api/postInterview', data)
@@ -33,7 +34,7 @@ const FetchSkills=()=>axios.get('/api/fetchSkills')
 
 const FetchPackage=()=>axios.get('/api/fetchPackage')
 
-const Predict = (file) => {
+const Predict = async(file) => {
     const formData = new FormData();
     formData.append('resume', file);
 

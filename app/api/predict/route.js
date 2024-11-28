@@ -2,21 +2,66 @@ import { spawn } from "child_process";
 import { NextResponse } from "next/server";
 import path from "path";
 import axios from "axios";
+import FormData from "form-data";
 
 export const routeSegmentConfig = {
   runtime: "nodejs", // Use Node.js runtime
 };
 
+async function scanWithVirusTotal(fileBuffer, fileName) {
+  const apiKey = process.env.VIRUSTOTAL_API_KEY; // Ensure your VirusTotal API key is in env vars
+  const formData = new FormData();
+  formData.append("file", fileBuffer, fileName);
+
+  try {
+    // Upload file to VirusTotal
+    const response = await axios.post(
+      "https://www.virustotal.com/api/v3/files",
+      formData,
+      {
+        headers: {
+          "x-apikey": apiKey,
+          ...formData.getHeaders(),
+        },
+        timeout: 60000,
+      }
+    );
+
+    const scanId = response.data.data.id;
+
+    // Retrieve scan results
+    const resultResponse = await axios.get(
+      `https://www.virustotal.com/api/v3/analyses/${scanId}`,
+      {
+        headers: { "x-apikey": apiKey },
+      }
+    );
+
+    return resultResponse.data.data.attributes;
+  } catch (error) {
+    console.error("VirusTotal Error:", error.response?.data || error.message);
+    throw new Error("VirusTotal scanning failed.");
+  }
+}
+
 export async function POST(req) {
   try {
     console.log("Got request"); // Debugging log
 
-    // Read the request body as text
     const resumeData = await req.text();
-    console.log("Resume Data Received");
+    const fileName = "uploaded_resume.txt"; 
+    const fileBuffer = Buffer.from(resumeData);
+
+    const virusTotalResult = await scanWithVirusTotal(fileBuffer, fileName);
+
+    if (virusTotalResult.malicious > 0) {
+      return NextResponse.json(
+        { error: "Malicious file detected. Upload rejected." },
+        { status: 400 }
+      );
+    }
 
     const scriptPath = path.join(process.cwd(), "predict.py");
-    console.log("Python script path:", scriptPath);
 
     // Call the Python script and pass the resume content via stdin
     return new Promise((resolve, reject) => {
