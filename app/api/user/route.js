@@ -65,7 +65,7 @@ export async function POST(req) {
         data: { user, token },
         message: "User registered and authenticated successfully",
       },
-      { status: 201 }
+      { status: 200 }
     );
   } catch (error) {
     console.error("Error in POST:", error);

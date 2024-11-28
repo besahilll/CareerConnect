@@ -11,7 +11,9 @@ export async function GET(req) {
         return authResult.response;
     }
     const userData = authResult.decoded_Data;
+    
     const userId = userData.userId;
+    
     try {
         const [user] = await db
             .select()

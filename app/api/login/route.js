@@ -6,19 +6,18 @@ import { eq } from 'drizzle-orm';
 import jwt from 'jsonwebtoken';
 
 export async function POST(req) {
+  console.log('got2')
   try {
-    console.log('got')
     const data = await req.json();
-    const username=data.username;
+    const email=data.email;
     const [existingUser] = await db
       .select()
       .from(USER)
-      .where(eq(USER.username, username))
+      .where(eq(USER.email, email))
       .execute();
 
 
     if (!existingUser) {
-      console.log('not')
       return NextResponse.json({ message: 'Invalid email or password.' }, { status: 401 });
     }
 
