@@ -20,16 +20,20 @@ const officeImages = [
 export default function Page() {
   const [companies, setCompanies] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
 
   // Fetch companies from API
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
+        setLoading(true);
         const response = await GlobalApi.getCompany();
         console.log(response);
         setCompanies(response.data.companies);
       } catch (error) {
         console.error("Error fetching companies:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -48,7 +52,6 @@ export default function Page() {
       {/* Search Bar */}
       <div className="flex justify-end p-6 bg-white">
         <div className="relative justify-end">
-          {/* Single Search Bar */}
           <input
             type="text"
             placeholder="Search by Company"
@@ -56,7 +59,6 @@ export default function Page() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          {/* Magnifying Glass Icon */}
           <span className="absolute left-3 top-2.5 text-gray-500">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -74,14 +76,15 @@ export default function Page() {
             </svg>
           </span>
         </div>
-
       </div>
-      
+
       {/* Company Cards */}
       <div className="p-6">
         <h2 className="text-3xl font-bold text-gray-800 mb-6">Explore Companies</h2>
 
-        {filteredCompanies.length > 0 ? (
+        {loading ? (
+          <p className="text-gray-600">Loading companies...</p>
+        ) : filteredCompanies.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {filteredCompanies.map((company, index) => (
               <Link
@@ -90,10 +93,9 @@ export default function Page() {
                 className="group"
               >
                 <div className="bg-white rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300 overflow-hidden">
-                  {/* Randomized Image */}
                   <div className="h-40">
                     <img
-                      src={officeImages[index % officeImages.length]} // Cycle through images
+                      src={officeImages[index % officeImages.length]}
                       alt={company}
                       className="object-cover w-full h-full"
                     />
