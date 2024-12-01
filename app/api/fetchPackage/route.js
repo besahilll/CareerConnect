@@ -6,6 +6,10 @@ import { eq, sql } from "drizzle-orm"; // Import SQL query helpers
 export async function GET(req) {
   try {
     const interviewData = await db.select().from(INTERVIEW_EXPERIENCE);
+    const placedPeopleCount = await db.select({
+      count: sql`COUNT(*)`,
+    }).from(INTERVIEW_EXPERIENCE);
+    const totalPlacedPeople = placedPeopleCount[0]?.count;
     const ranges = {
       '0-8 LPA': 0,
       '9-15 LPA': 0,
@@ -13,10 +17,11 @@ export async function GET(req) {
       '30+ LPA': 0,
     };
 
+    let highestPackage = 0; 
+
     // Categorize each interview's package into ranges
     interviewData.forEach(item => {
       const packageValue = parseFloat(item.packageOffered);
-      console.log(packageValue)
       if (packageValue >= 0.0 && packageValue <= 8.0) {
         ranges['0-8 LPA'] += 1;
       } else if (packageValue >= 9.0 && packageValue <= 15.0) {
@@ -26,10 +31,14 @@ export async function GET(req) {
       } else if (packageValue >= 31.0) {
         ranges['30+ LPA'] += 1;
       }
+
+      if (packageValue > highestPackage) {
+        highestPackage = packageValue;
+      }
     });
 
     // Return the data in a format suitable for your frontend
-    return NextResponse.json(ranges, { status: 200 });
+    return NextResponse.json({ ranges, highestPackage , totalPlacedPeople}, { status: 200 });
   } catch (error) {
     // Handle any errors
     return NextResponse.json({ error: error.message }, { status: 500 });

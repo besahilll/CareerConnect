@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -21,9 +21,9 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="pt-8 py-4 bg-white">
-      <div className="max-w-7xl mx-auto flex justify-between items-center px-4">
-        {/* Left side: Logo with vertical divider */}
+    <nav className="sticky top-0 z-50 bg-white shadow-md">
+      <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-4">
+        {/* Logo and Divider */}
         <div className="flex items-center space-x-4">
           <Link href="/">
             <Image
@@ -34,26 +34,36 @@ export default function Navbar() {
               className="cursor-pointer"
             />
           </Link>
-          <div className="border-l h-8 border-gray-300" /> {/* Vertical Divider */}
+          <div className="border-l h-8 border-gray-300" />
         </div>
 
-        {/* Right side: Navigation Links */}
+        {/* Navigation Links */}
         <div className="flex space-x-8 items-center">
           <Link href="/" className="text-black hover:text-blue-500">
             Home
           </Link>
 
-          {/* Dropdown for Interviews */}
-          <div className="relative">
-            <button onClick={toggleDropdown} className="text-black hover:text-blue-500">
+          {/* Interviews Dropdown */}
+          <div
+            onMouseEnter={() => setIsDropdownOpen(true)}
+            onMouseLeave={() => setIsDropdownOpen(false)}
+            className="relative"
+          >
+            <button className="text-black hover:text-blue-500">
               Interviews
             </button>
             {isDropdownOpen && (
-              <div className="absolute bg-black text-white mt-2 py-2 w-48 shadow-lg rounded">
-                <Link href="/interviews/PostInterview" className="block px-4 py-2 hover:bg-gray-200 hover:text-black">
+              <div className="absolute bg-black text-white top-full mt-1 py-2 w-48 shadow-lg rounded z-50">
+                <Link
+                  href="/dashboard/interviewInsights"
+                  className="block px-4 py-2 hover:bg-gray-200 hover:text-black"
+                >
                   Company Interviews
                 </Link>
-                <Link href="/dashboard/interviewInsights" className="block px-4 py-2 hover:bg-gray-200 hover:text-black">
+                <Link
+                  href="/dashboard/PostInterview"
+                  className="block px-4 py-2 hover:bg-gray-200 hover:text-black"
+                >
                   Post Interview Experience
                 </Link>
               </div>
@@ -67,9 +77,9 @@ export default function Navbar() {
             Analytics Dashboard
           </Link>
 
-          {/* Vertical divider and Profile Icon */}
-          <div className="flex items-center space-x-4">
-            <div className="border-l h-8 border-gray-300" /> {/* Vertical Divider */}
+          {/* Profile Dropdown */}
+          <div className="relative flex items-center space-x-4">
+            <div className="border-l h-8 border-gray-300" />
             <button onClick={toggleProfileDropdown}>
               <Image
                 src="/assets/images/person.jpg"
@@ -80,8 +90,11 @@ export default function Navbar() {
               />
             </button>
             {isProfileDropdownOpen && (
-              <div className="absolute right-0 bg-white text-black mt-36 py-2 w-48 shadow-lg rounded">
-                <Link href="/dashboard/user-profile" className="block px-4 py-2 hover:bg-gray-200">
+              <div className="absolute right-0 bg-white text-black mt-2 py-2 w-48 shadow-lg rounded z-50">
+                <Link
+                  href="/dashboard/user-profile"
+                  className="block px-4 py-2 hover:bg-gray-200"
+                >
                   My Profile
                 </Link>
                 <button
@@ -95,7 +108,7 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-      <hr className="border-gray-300" /> {/* Horizontal rule */}
+      <hr className="border-gray-300" />
     </nav>
   );
 }

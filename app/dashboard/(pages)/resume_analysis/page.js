@@ -2,6 +2,7 @@
 import GlobalApi from "@/app/_services/GlobalApi";
 import React, { useState, useRef } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import Navbar from "../../_components/navbar/page";
 
 export default function Page() {
     const [file, setFile] = useState(null);
@@ -40,6 +41,8 @@ export default function Page() {
     };
 
     return (
+        <>
+        <Navbar/>
         <div className="min-h-screen bg-gradient-to-br from-green-100 to-blue-100 flex flex-col items-center justify-center">
             <Toaster />
 
@@ -98,7 +101,7 @@ export default function Page() {
                 </>
             ) : (
                 // Full-Page Result Display
-                <div className="bg-white shadow-lg rounded-lg p-8 max-w-4xl w-full mx-auto">
+                <div className="bg-white shadow-lg rounded-lg p-8 max-w-4xl w-full mx-auto mt-8">
                     <h3 className="text-green-700 font-bold text-2xl text-center mb-4">
                         Resume Analysis Results
                     </h3>
@@ -115,7 +118,7 @@ export default function Page() {
                         <ul className="list-disc list-inside text-gray-600 text-lg space-y-2">
                             {result.companies.map((company, index) => (
                                 <li key={index}>
-                                    <span className="font-medium">
+                                    <span className="font-bold">
                                         {company.company}:
                                     </span>{" "}
                                     {company.description}
@@ -133,6 +136,8 @@ export default function Page() {
                     </div>
                 </div>
             )}
+            <br /> <br />
         </div>
+        </>
     );
 }

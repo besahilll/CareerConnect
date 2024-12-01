@@ -20,8 +20,8 @@ const SkillsChartPage = () => {
   const [skillsData, setSkillsData] = useState([]);
   const [excludedSkills, setExcludedSkills] = useState([]);
   const [packageData, setPackageData] = useState([]);
-  const [studentsPlaced, setStudentsPlaced] = useState(0); // Number of students placed
-  const [highestPackage, setHighestPackage] = useState(0); // Highest package offered
+  const [studentsPlaced, setStudentsPlaced] = useState(0); 
+  const [highestPackage, setHighestPackage] = useState(0); 
 
   useEffect(() => {
     const fetchSkills = async () => {
@@ -40,17 +40,14 @@ const SkillsChartPage = () => {
     const fetchPackages = async () => {
       try {
         const data = await GlobalApi.FetchPackage();
-        const transformedData = Object.entries(data.data).map(([range, value]) => ({
+        setHighestPackage(data.data.highestPackage);
+        const transformedData = Object.entries(data.data.ranges).map(([range, value]) => ({
           range,
           value,
         }));
 
         setPackageData(transformedData);
-
-        // Simulate fetching highest package and students placed
-        const highest = Math.max(...Object.values(data.data)); // Simulate highest package
-        setHighestPackage(highest);
-        setStudentsPlaced(100); // Example: Set 100 students placed
+        setStudentsPlaced(data.data.totalPlacedPeople); 
       } catch (error) {
         console.error("Error fetching package data:", error);
       }
